@@ -4,11 +4,11 @@ import {
     ReactNode,
     SetStateAction,
     useContext,
-    useEffect,
     useLayoutEffect,
     useState
 } from "react";
 import {DataPoint, GuiDataPoint} from "../types/dataPoint.ts";
+import { v4 as uuid } from 'uuid';
 
 type CoffeeDataContextType = {
     unProcessedDataPoints: GuiDataPoint[],
@@ -44,6 +44,7 @@ export function CoffeeDataContextProvider({children}: { children: ReactNode }) {
             return {
                 milliliter: dp.milliliter.toString(),
                 seconds: dp.seconds.toString(),
+                id: uuid()
             }
         })
         setUnProcessedDataPoints(guiDataPoints)

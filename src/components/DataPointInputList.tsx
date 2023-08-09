@@ -1,7 +1,8 @@
 import {Box, Button, Stack, Typography, useTheme} from "@mui/material";
 import DataPointInput from "./DataPointInput.tsx";
-import {DataPoint, GuiDataPoint} from "../types/dataPoint.ts";
+import {GuiDataPoint} from "../types/dataPoint.ts";
 import {useSaveDataPoints, useUnProcessedDataPoints} from "../context/CoffeeDataContext.tsx";
+import { v4 as uuid } from 'uuid';
 
 
 export default function DataPointInputList() {
@@ -10,9 +11,9 @@ export default function DataPointInputList() {
     const [unProcessedDataPoints, setUnProcessedDataPoints] = useUnProcessedDataPoints();
 
 
-    const toDisplayDataPoints = [...unProcessedDataPoints, {seconds: '', milliliter: ''}]
+    const toDisplayDataPoints: GuiDataPoint[] = [...unProcessedDataPoints, {seconds: '', milliliter: '', id: uuid()}]
 
-    function setMilliliters(index: number, milliliters: string) {
+    function setMilliliters(index: number, uuid: string, milliliters: string) {
         if (shouldAppendDataPoint(index, unProcessedDataPoints)) {
             setUnProcessedDataPoints((dataPoints) => {
                 const newDataPoints = [
@@ -20,6 +21,7 @@ export default function DataPointInputList() {
                     {
                         milliliter: milliliters,
                         seconds: '',
+                        id: uuid,
                     }
                 ]
                 console.log(newDataPoints)
@@ -34,7 +36,7 @@ export default function DataPointInputList() {
         }
     }
 
-    function setTimeSeconds(index: number, timeSeconds: string) {
+    function setTimeSeconds(index: number, uuid: string, timeSeconds: string) {
         if (shouldAppendDataPoint(index, unProcessedDataPoints)) {
             setUnProcessedDataPoints((dataPoints) => {
                 return [
@@ -42,6 +44,7 @@ export default function DataPointInputList() {
                     {
                         milliliter: '',
                         seconds: timeSeconds,
+                        id: uuid,
                     }
                 ]
             })
@@ -56,6 +59,9 @@ export default function DataPointInputList() {
 
     function removeDataPoint(index: number) {
         setUnProcessedDataPoints((dataPoints) => {
+            if (dataPoints.length === 0) {
+                return dataPoints;
+            }
             const lastDataPoint = dataPoints[dataPoints.length - 1]
             const toSpliceIndex = index > dataPoints.length - 1
             && lastDataPoint.seconds === ''
@@ -89,11 +95,11 @@ export default function DataPointInputList() {
                     toDisplayDataPoints.map((dataPoint, index) => {
                         return (
                             <DataPointInput
-                                key={index}
+                                key={dataPoint.id}
                                 milliliters={dataPoint.milliliter}
                                 timeSeconds={dataPoint.seconds}
-                                setMilliliters={(milliliters) => setMilliliters(index, milliliters)}
-                                setTimeSeconds={(timeSeconds) => setTimeSeconds(index, timeSeconds)}
+                                setMilliliters={(milliliters) => setMilliliters(index, dataPoint.id, milliliters)}
+                                setTimeSeconds={(timeSeconds) => setTimeSeconds(index, dataPoint.id, timeSeconds)}
                                 onRemove={() => removeDataPoint(index)}
 
 
