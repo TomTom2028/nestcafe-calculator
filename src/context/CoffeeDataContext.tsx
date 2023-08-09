@@ -1,4 +1,13 @@
-import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
+import {
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useState
+} from "react";
 import {DataPoint, GuiDataPoint} from "../types/dataPoint.ts";
 
 type CoffeeDataContextType = {
@@ -8,6 +17,7 @@ type CoffeeDataContextType = {
         b: number,
     },
     setUnProcessedDataPoints: Dispatch<SetStateAction<GuiDataPoint[]>>,
+    saveDataPoints (): void,
 }
 
 const CoffeeDataContext = createContext<CoffeeDataContextType | null>(null);
@@ -20,12 +30,31 @@ export function CoffeeDataContextProvider({children}: { children: ReactNode }) {
 
 
     const formulaData = calculateCofeeFunction(cleanDataPoints)
+    function saveDataPoints() {
+        localStorage.setItem('data', JSON.stringify(cleanDataPoints));
+    }
+
+    useLayoutEffect(() => {
+        const restoredData = localStorage.getItem('data');
+        if (!restoredData) {
+            return;
+        }
+        const parsedData = JSON.parse(restoredData) as DataPoint[];
+        const guiDataPoints: GuiDataPoint[] = parsedData.map(dp => {
+            return {
+                milliliter: dp.milliliter.toString(),
+                seconds: dp.seconds.toString(),
+            }
+        })
+        setUnProcessedDataPoints(guiDataPoints)
+    }, [])
 
     return (
         <CoffeeDataContext.Provider value={{
             unProcessedDataPoints,
             setUnProcessedDataPoints,
-            formulaData
+            formulaData,
+            saveDataPoints
         }}>
             {children}
         </CoffeeDataContext.Provider>
@@ -91,4 +120,9 @@ function calculateCofeeFunction(dataPoints: DataPoint[]) {
         a,
         b
     }
+}
+
+export function useSaveDataPoints() {
+    const context = useSafeCoffeContext();
+    return context.saveDataPoints;
 }

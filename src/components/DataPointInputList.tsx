@@ -1,7 +1,7 @@
-import {Box, Stack, Typography, useTheme} from "@mui/material";
+import {Box, Button, Stack, Typography, useTheme} from "@mui/material";
 import DataPointInput from "./DataPointInput.tsx";
 import {DataPoint, GuiDataPoint} from "../types/dataPoint.ts";
-import {useUnProcessedDataPoints} from "../context/CoffeeDataContext.tsx";
+import {useSaveDataPoints, useUnProcessedDataPoints} from "../context/CoffeeDataContext.tsx";
 
 
 export default function DataPointInputList() {
@@ -66,6 +66,7 @@ export default function DataPointInputList() {
         })
     }
 
+    const saveFunction = useSaveDataPoints();
 
     return (
         <Box sx={{
@@ -83,6 +84,7 @@ export default function DataPointInputList() {
                     alignItems: 'center',
                 }}
             >
+                <Button variant="contained" color="secondary" onClick={saveFunction}>Save!</Button>
                 {
                     toDisplayDataPoints.map((dataPoint, index) => {
                         return (
