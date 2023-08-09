@@ -6,4 +6,5 @@ export type DataPoint = {
 export type GuiDataPoint = {
     seconds: string;
     milliliter : string;
+    id: string;
 }
