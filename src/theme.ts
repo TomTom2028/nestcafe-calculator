@@ -4,12 +4,17 @@ const theme = createTheme({
     palette: {
         background: {
             default: '#FFE8D6',
-        },
-        text: {
-            primary: '#6B705C'
+            paper: '#f8efe1'
         },
         primary: {
-            main: '#B7B7A4',
+            main: '#6B705C'
+        }
+    },
+    components: {
+        MuiTypography: {
+            defaultProps: {
+                color: 'primary.dark'
+            }
         }
     }
 })

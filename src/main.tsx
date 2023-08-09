@@ -8,12 +8,15 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {ThemeProvider} from "@mui/material";
 import theme from "./theme.ts";
+import {CoffeeDataContextProvider} from "./context/CoffeeDataContext.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <ThemeProvider theme={theme}>
           <CssBaseline/>
-          <App />
+          <CoffeeDataContextProvider>
+              <App />
+          </CoffeeDataContextProvider>
       </ThemeProvider>
   </React.StrictMode>,
 )
