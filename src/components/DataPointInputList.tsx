@@ -59,6 +59,9 @@ export default function DataPointInputList() {
 
     function removeDataPoint(index: number) {
         setUnProcessedDataPoints((dataPoints) => {
+            if (dataPoints.length === 0) {
+                return dataPoints;
+            }
             const lastDataPoint = dataPoints[dataPoints.length - 1]
             const toSpliceIndex = index > dataPoints.length - 1
             && lastDataPoint.seconds === ''
