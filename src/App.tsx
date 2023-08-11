@@ -1,12 +1,16 @@
 import {RouterProvider} from "react-router-dom";
 import router from "./router.tsx";
+import ServiceWorkerWrapper from "./serviceworker/ServiceWorkerWrapper.tsx";
+import React from "react";
 
 
 
 function App() {
 
   return (
-      <RouterProvider router={router}/>
+      <ServiceWorkerWrapper>
+        <RouterProvider router={router}/>
+      </ServiceWorkerWrapper>
   )
 }
 
