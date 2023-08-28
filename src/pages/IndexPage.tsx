@@ -2,6 +2,7 @@ import {useCoffeeFormula} from "../context/CoffeeDataContext.tsx";
 import {Grid, Typography} from "@mui/material";
 import MLTimeConverter from "../components/MLTimeConverter.tsx";
 import DataPointInputList from "../components/DataPointInputList.tsx";
+import Timer from "../components/Timer.tsx";
 
 function IndexPage() {
     const formulaData = useCoffeeFormula();
@@ -23,6 +24,9 @@ function IndexPage() {
             </Grid>
             <Grid item xs={12}>
                 <MLTimeConverter/>
+            </Grid>
+            <Grid item xs={12}>
+                <Timer/>
             </Grid>
         </Grid>
 
